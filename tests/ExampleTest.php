@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Zerotoprod\Mgid\Tests;
 
 use PHPUnit\Framework\TestCase;
 
