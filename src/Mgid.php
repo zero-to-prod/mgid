@@ -3,7 +3,6 @@
 namespace Zerotoprod\Mgid;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Http;
 
 class Mgid
 {
@@ -29,10 +28,11 @@ class Mgid
     private function authenticate(string $email, string $password): void
     {
         $client = new Client();
-        $response = $client->request('POST',
+        $response = $client->request(
+            'POST',
             'http://api.mgid.com/v1/auth/token',
             [
-                'email'    => $email,
+                'email' => $email,
                 'password' => $password,
             ]
         );
