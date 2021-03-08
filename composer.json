@@ -16,8 +16,10 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "doctrine/annotations": "^1.12",
         "guzzlehttp/guzzle": "^7.2",
-        "ext-json": "*"
+        "symfony/validator": "^5.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.17",
@@ -27,7 +29,11 @@
     "autoload": {
         "psr-4": {
             "Zerotoprod\\Mgid\\": "src"
-        }
+        },
+        "files": [
+            "tests/Helpers/Functions/response.php",
+            "tests/Helpers/Functions/get_stub.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

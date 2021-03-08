@@ -4,8 +4,11 @@ namespace Zerotoprod\Mgid;
 
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validation;
 use Zerotoprod\Mgid\Exception\MalformedResponse;
 use Zerotoprod\Mgid\Exception\TooManyFailedAttempts;
+use Zerotoprod\Mgid\Helpers\ResponseHelper;
 
 class Authenticate
 {
@@ -33,7 +36,7 @@ class Authenticate
                 'password' => $password,
             ]
         );
-        $response_contents = $this->getResponseContents($response);
+        $response_contents = ResponseHelper::getContents($response);
         $this->throwExceptionOnTooManyFailedAttempts($response_contents);
         $this->throwExceptionOnMalformedResponse($response_contents);
         $this->assignPropertiesFromResponse($response_contents);
@@ -48,21 +51,10 @@ class Authenticate
     private function throwExceptionOnTooManyFailedAttempts(array $response_contents): array
     {
         if (isset($response_contents['errors'])) {
-            throw new TooManyFailedAttempts('Too many failed attempts');
+            throw new TooManyFailedAttempts('Too many failed attempts.');
         }
 
         return $response_contents;
-    }
-
-    /**
-     * @param  ResponseInterface  $response
-     *
-     * @return mixed
-     * @throws JsonException
-     */
-    private function getResponseContents(ResponseInterface $response)
-    {
-        return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -72,10 +64,18 @@ class Authenticate
      */
     private function throwExceptionOnMalformedResponse($response_contents): void
     {
-        if (isset($response_contents['token'], $response_contents['refresh_token'], $response_contents['id_auth'])) {
-            return;
+        $validator  = Validation::createValidator();
+        $constraint = new Assert\Collection(
+            [
+                'token'         => new Assert\NotBlank(),
+                'refresh_token' => new Assert\NotBlank(),
+                'id_auth'       => new Assert\NotBlank(),
+            ]
+        );
+
+        if (count($violations = $validator->validate($response_contents, $constraint)) > 0) {
+            throw new MalformedResponse($violations[0]->getMessage());
         }
-        throw new MalformedResponse("Malformed response.");
     }
 
     /**

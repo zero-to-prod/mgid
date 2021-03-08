@@ -15,14 +15,14 @@ class BaseMgidClient
     public $token;
     public $refresh_token;
     public $id_auth;
-    private Client $client;
+    public Client $client;
 
     /**
      * Mgid constructor.
      *
      * @param  string  $email
      * @param  string  $password
-     * @param  Client|null  $client
+     * @param  Client|null  $client // Used for testing.
      *
      * @throws JsonException
      * @throws MalformedResponse
@@ -36,5 +36,10 @@ class BaseMgidClient
         $this->token         = $response->token;
         $this->refresh_token = $response->refresh_token;
         $this->id_auth       = $response->id_auth;
+    }
+
+    public function campaign(int $id, Client $client = null)
+    {
+        return new Campaign($id, $this, $client);
     }
 }
