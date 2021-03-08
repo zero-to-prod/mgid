@@ -3,12 +3,15 @@
 namespace Zerotoprod\Mgid;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Zerotoprod\Mgid\Exception\MalformedResponse;
 use Zerotoprod\Mgid\Exception\TooManyFailedAttempts;
 
 class MgidClient extends BaseMgidClient
 {
+    public static Client $client;
+
     /**
      * Mgid constructor.
      *
@@ -17,10 +20,29 @@ class MgidClient extends BaseMgidClient
      *
      * @throws MalformedResponse
      * @throws TooManyFailedAttempts
-     * @throws JsonException
+     * @throws JsonException|GuzzleException
      */
     public function __construct(string $email, string $password)
     {
-        parent::__construct($email, $password);
+        $this->setClient();
+
+        $authenticated_client = new AuthenticateClient($email, $password);
+
+        $this->assignPropertiesFromAuthenticatedClient($authenticated_client);
+    }
+
+    private function setClient(): void
+    {
+        self::$client = self::$client ?? new Client();
+    }
+
+    /**
+     * @param  AuthenticateClient  $response
+     */
+    private function assignPropertiesFromAuthenticatedClient(AuthenticateClient $response): void
+    {
+        $this->token         = $response->token;
+        $this->refresh_token = $response->refresh_token;
+        $this->id_auth       = $response->id_auth;
     }
 }

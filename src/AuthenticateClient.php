@@ -2,15 +2,14 @@
 
 namespace Zerotoprod\Mgid;
 
+use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Zerotoprod\Mgid\Exception\MalformedResponse;
 use Zerotoprod\Mgid\Exception\TooManyFailedAttempts;
-use Zerotoprod\Mgid\Helpers\ResponseHelper;
 
-class Authenticate
+class AuthenticateClient
 {
     public string $token;
     public string $refresh_token;
@@ -21,25 +20,17 @@ class Authenticate
      *
      * @param  string  $email
      * @param  string  $password
-     * @param $client
      *
      * @throws MalformedResponse
-     * @throws TooManyFailedAttempts|JsonException
+     * @throws TooManyFailedAttempts|JsonException|GuzzleException
      */
-    public function __construct(string $email, string $password, $client)
+    public function __construct(string $email, string $password)
     {
-        $response          = $client->request(
-            'POST',
-            Mgid::$apiBase.'auth/token',
-            [
-                'email'    => $email,
-                'password' => $password,
-            ]
-        );
-        $response_contents = ResponseHelper::getContents($response);
-        $this->throwExceptionOnTooManyFailedAttempts($response_contents);
-        $this->throwExceptionOnMalformedResponse($response_contents);
-        $this->assignPropertiesFromResponse($response_contents);
+        $response = Http::setUrl('auth/token')
+            ->setData(['email' => $email, 'password' => $password])->post()->asArray();
+        $this->throwExceptionOnTooManyFailedAttempts($response);
+        $this->throwExceptionOnMalformedResponse($response);
+        $this->assignPropertiesFromResponse($response);
     }
 
     /**
@@ -67,9 +58,9 @@ class Authenticate
         $validator  = Validation::createValidator();
         $constraint = new Assert\Collection(
             [
-                'token'         => new Assert\NotBlank(),
-                'refresh_token' => new Assert\NotBlank(),
-                'id_auth'       => new Assert\NotBlank(),
+                'token'        => new Assert\NotBlank(),
+                'refreshToken' => new Assert\NotBlank(),
+                'idAuth'       => new Assert\NotBlank(),
             ]
         );
 
@@ -84,7 +75,7 @@ class Authenticate
     private function assignPropertiesFromResponse($response_contents): void
     {
         $this->token         = $response_contents['token'];
-        $this->refresh_token = $response_contents['refresh_token'];
-        $this->id_auth       = $response_contents['id_auth'];
+        $this->refresh_token = $response_contents['refreshToken'];
+        $this->id_auth       = $response_contents['idAuth'];
     }
 }
