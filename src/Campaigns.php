@@ -7,22 +7,19 @@ use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Zerotoprod\Mgid\Support\Http;
 
-class Campaign
+class Campaigns
 {
     public $token;
     public $refresh_token;
     public $id_auth;
-    private int $id;
 
     /**
      * Mgid constructor.
      *
-     * @param  int  $id
      * @param  BaseClient  $mgid
      */
-    public function __construct(int $id, BaseClient $mgid)
+    public function __construct(BaseClient $mgid)
     {
-        $this->id   = $id;
         $this->mgid = $mgid;
     }
 
@@ -35,8 +32,7 @@ class Campaign
     {
         $token    = $this->mgid->token;
         $id_auth  = $this->mgid->id_auth;
-        $id       = $this->id;
 
-        return Http::setUrl("goodhits/clients/$id_auth/campaigns/$id?token=$token")->get()->bodyContentsAsArray();
+        return Http::setUrl("goodhits/clients/$id_auth/campaigns?token=$token")->get()->bodyContentsAsArray();
     }
 }

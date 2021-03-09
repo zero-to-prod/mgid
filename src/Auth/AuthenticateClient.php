@@ -1,6 +1,6 @@
 <?php
 
-namespace Zerotoprod\Mgid;
+namespace Zerotoprod\Mgid\Auth;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Zerotoprod\Mgid\Exception\MalformedResponse;
 use Zerotoprod\Mgid\Exception\TooManyFailedAttempts;
+use Zerotoprod\Mgid\Support\Http;
 
 class AuthenticateClient
 {
@@ -27,7 +28,7 @@ class AuthenticateClient
     public function __construct(string $email, string $password)
     {
         $response = Http::setUrl('auth/token')
-            ->setData(['email' => $email, 'password' => $password])->post()->asArray();
+            ->setData(['email' => $email, 'password' => $password])->post()->bodyContentsAsArray();
         $this->throwExceptionOnTooManyFailedAttempts($response);
         $this->throwExceptionOnMalformedResponse($response);
         $this->assignPropertiesFromResponse($response);

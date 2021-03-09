@@ -1,0 +1,86 @@
+{
+    "11015845": {
+        "id": 11015845,
+        "language": 1,
+        "name": "Company Traffic USA",
+        "status": {
+            "id": 4,
+            "name": "paused",
+            "reason": "clientManuallyPaused"
+        },
+        "domainsFilter": {
+            "filterType": "off",
+            "domainsNames": []
+        },
+        "ipsFilter": {
+            "filterType": "off",
+            "ips": []
+        },
+        "widgetsFilterUid": {
+            "filterType": "off",
+            "widgets": []
+        },
+        "statistics": {
+            "clicks": 0,
+            "wages": 0
+        },
+        "limitsFilter": {
+            "limitType": "clicks_limits",
+            "dailyLimit": 500,
+            "overallLimit": 500000,
+            "splitDailyLimitEvenly": 0
+        },
+        "trackingOptions": {
+            "utm_campaign": "Company+Traffic",
+            "utm_source": "mgid.com",
+            "utm_medium": "cpc",
+            "utm_custom": ""
+        },
+        "targets": [],
+        "languageTargeting": [],
+        "whenAdd": "2020-12-28",
+        "campaignType": "push"
+    },
+    "11043670": {
+        "id": 11043670,
+        "language": 1,
+        "name": "Company Traffic United Kingdom",
+        "status": {
+            "id": 4,
+            "name": "paused",
+            "reason": "clientManuallyPaused"
+        },
+        "domainsFilter": {
+            "filterType": "off",
+            "domainsNames": []
+        },
+        "ipsFilter": {
+            "filterType": "off",
+            "ips": []
+        },
+        "widgetsFilterUid": {
+            "filterType": "off",
+            "widgets": []
+        },
+        "statistics": {
+            "clicks": 0,
+            "wages": 0
+        },
+        "limitsFilter": {
+            "limitType": "clicks_limits",
+            "dailyLimit": 600,
+            "overallLimit": 500000,
+            "splitDailyLimitEvenly": 0
+        },
+        "trackingOptions": {
+            "utm_campaign": "Company+Traffic+United+Kingdom",
+            "utm_source": "mgid.com",
+            "utm_medium": "cpc",
+            "utm_custom": ""
+        },
+        "targets": [],
+        "languageTargeting": [],
+        "whenAdd": "2021-02-17",
+        "campaignType": "push"
+    }
+}

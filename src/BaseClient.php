@@ -3,8 +3,11 @@
 
 namespace Zerotoprod\Mgid;
 
-class BaseMgidClient
+use GuzzleHttp\Client;
+
+class BaseClient
 {
+    public static Client $client;
     public $token;
     public $refresh_token;
     public $id_auth;
@@ -12,5 +15,10 @@ class BaseMgidClient
     public function campaign(int $id)
     {
         return new Campaign($id, $this);
+    }
+
+    public function campaigns()
+    {
+        return new Campaigns($this);
     }
 }

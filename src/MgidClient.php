@@ -5,12 +5,13 @@ namespace Zerotoprod\Mgid;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Zerotoprod\Mgid\Auth\AuthenticateClient;
 use Zerotoprod\Mgid\Exception\MalformedResponse;
 use Zerotoprod\Mgid\Exception\TooManyFailedAttempts;
 
-class MgidClient extends BaseMgidClient
+class MgidClient extends BaseClient
 {
-    public static Client $client;
+    public static string $apiBase = 'http://api.mgid.com/v1/';
 
     /**
      * Mgid constructor.

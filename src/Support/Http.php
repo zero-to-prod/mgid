@@ -1,8 +1,9 @@
 <?php
 
-namespace Zerotoprod\Mgid;
+namespace Zerotoprod\Mgid\Support;
 
 use GuzzleHttp\Client;
+use Zerotoprod\Mgid\Support\HttpBase;
 
 class Http
 {

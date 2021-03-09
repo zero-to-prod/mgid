@@ -1,7 +1,7 @@
 <?php
 /** @noinspection PhpUndefinedConstantInspection */
 
-namespace Zerotoprod\Mgid\ExtendedClasses;
+namespace Zerotoprod\Mgid\Support;
 
 use GuzzleHttp\Client;
 use JsonException;
@@ -15,10 +15,19 @@ class GuzzleHttpWrapper extends Client
      * @return mixed
      * @throws JsonException
      */
-    public function asArray()
+    public function bodyContentsAsArray()
     {
         return json_decode($this->response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
+
+    /**
+     * @return string
+     */
+    public function bodyContents(): string
+    {
+        return $this->response->getBody()->getContents();
+    }
+
 
     /**
      * @param  mixed  $response

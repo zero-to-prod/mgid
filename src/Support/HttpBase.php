@@ -1,20 +1,22 @@
 <?php
 
-namespace Zerotoprod\Mgid;
+namespace Zerotoprod\Mgid\Support;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Zerotoprod\Mgid\ExtendedClasses\GuzzleHttpWrapper;
+use Zerotoprod\Mgid\BaseClient;
+use Zerotoprod\Mgid\Mgid;
+use Zerotoprod\Mgid\MgidClient;
 
 class HttpBase
 {
     private $url;
     private $data = [];
-    private Client $client;
+    private MgidClient $client;
 
     /**
-     * @return GuzzleHttpWrapper
+     * @return \Zerotoprod\Mgid\Support\GuzzleHttpWrapper
      * @throws GuzzleException
      */
     public function post(): GuzzleHttpWrapper
@@ -22,11 +24,11 @@ class HttpBase
         RequestOptions::FORM_PARAMS;
         $client = $this->client ?? MgidClient::$client;
 
-        return (new GuzzleHttpWrapper())->setResponse($client->request('get', $this->url, ['form_params' => $this->data]));
+        return (new GuzzleHttpWrapper())->setResponse($client->request('post', $this->url, ['form_params' => $this->data]));
     }
 
     /**
-     * @return GuzzleHttpWrapper
+     * @return \Zerotoprod\Mgid\Support\GuzzleHttpWrapper
      * @throws GuzzleException
      */
     public function get(): GuzzleHttpWrapper
@@ -43,7 +45,7 @@ class HttpBase
      */
     public function setUrl(string $url): HttpBase
     {
-        $this->url = Mgid::$apiBase.$url;
+        $this->url = MgidClient::$apiBase.$url;
 
         return $this;
     }
@@ -61,11 +63,11 @@ class HttpBase
     }
 
     /**
-     * @param  GuzzleHttpWrapper  $client
+     * @param  \Zerotoprod\Mgid\Support\GuzzleHttpWrapper  $client
      *
      * @return HttpBase
      */
-    public function setClient(Client $client): HttpBase
+    public function setClient(MgidClient $client): HttpBase
     {
         $this->client = $client;
 
